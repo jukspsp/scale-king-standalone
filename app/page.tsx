@@ -10,58 +10,35 @@ import { LayoutDashboard, LogOut, User } from 'lucide-react';
 // import PatientList from '@/components/PatientList';
 
 export default function ScaleKingV2() {
-  const [user, setUser] = useState<any>(null);
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [activeTab, setActiveTab] = useState("dashboard");
+  // [핵심 수정] user 초기값을 null이 아니라 '가짜 유저 객체'로 설정합니다.
+  const [user, setUser] = useState<any>({
+      uid: "guest_tester_123",
+      email: "guest@test.com",
+      displayName: "테스트 관리자"
+  });
+  
+  // ... (나머지 state들은 그대로 유지) ...
 
-  // 로그인 상태 확인
-  useEffect(() => {
+  // [수정] useEffect에서 실제 로그인 체크 로직을 주석 처리하거나 제거합니다.
+  /* useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-      setUser(currentUser);
+      // 여기 로직은 실제 로그인 때만 필요하므로 주석 처리
     });
     return () => unsubscribe();
   }, []);
+  */
 
-  // 로그인 핸들러
-  const handleLogin = async (e: React.FormEvent) => {
-    e.preventDefault();
-    try {
-      await signInWithEmailAndPassword(auth, email, password);
-    } catch (error: any) {
-      alert("로그인 실패: " + error.message);
-    }
-  };
-
-  // 로그아웃 핸들러
+  // [수정] 로그아웃 버튼도 사실상 필요 없지만, 누르면 알림만 뜨게 변경
   const handleLogout = async () => {
-    await signOut(auth);
+    alert("테스트 모드입니다. 로그아웃되지 않습니다.");
   };
 
-  // --- 1. 로그인 화면 (비로그인 시) ---
-  if (!user) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-slate-100">
-        <form onSubmit={handleLogin} className="bg-white p-8 rounded-xl shadow-lg w-96 space-y-4">
-          <h1 className="text-2xl font-bold text-center text-indigo-700">척도왕 V2 (Dev)</h1>
-          <p className="text-center text-slate-400 text-sm">독립 개발 환경입니다.</p>
-          <input 
-            type="email" placeholder="이메일" value={email} onChange={e=>setEmail(e.target.value)}
-            className="w-full border p-3 rounded-lg outline-none focus:ring-2 focus:ring-indigo-500"
-          />
-          <input 
-            type="password" placeholder="비밀번호" value={password} onChange={e=>setPassword(e.target.value)}
-            className="w-full border p-3 rounded-lg outline-none focus:ring-2 focus:ring-indigo-500"
-          />
-          <button type="submit" className="w-full bg-indigo-600 text-white py-3 rounded-lg font-bold hover:bg-indigo-700">
-            로그인 / 회원가입 자동체크
-          </button>
-        </form>
-      </div>
-    );
-  }
+  // --- 1. 로그인 화면 (비로그인 시) --- 
+  // user가 이미 가짜 값으로 채워져 있으므로 이 부분은 절대 실행되지 않습니다.
+  // (코드 삭제 또는 그대로 두셔도 무방합니다.)
 
   // --- 2. 메인 대시보드 (로그인 후) ---
+  // 여기부터 렌더링 됩니다.
   return (
     <div className="flex h-screen overflow-hidden">
       {/* 사이드바 */}
